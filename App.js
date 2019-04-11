@@ -10,8 +10,11 @@ import Login from './src/screens/login'
 import Home from './src/screens/home'
 import Transactions from './src/screens/transactions'
 import Setting from './src/screens/setting'
+import Teachers from './src/screens/teachers'
+import Students from './src/screens/students'
+import Courses from './src/screens/courses'
 
-const AppContents = createBottomTabNavigator({
+const AppTabNavigator = createBottomTabNavigator({
     //contentscreens here
     home : {
         screen : Home,
@@ -66,6 +69,19 @@ const AppContents = createBottomTabNavigator({
     },
     navigationOptions : {
         header : null,
+    }
+})
+
+const AppContents = createStackNavigator({
+    navigator : AppTabNavigator,
+    teacher : {
+        screen : Teachers,
+    },
+    student : {
+        screen : Students,
+    },
+    courses : {
+        screen : Courses,
     }
 })
 

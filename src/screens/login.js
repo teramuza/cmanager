@@ -29,7 +29,7 @@ class Login extends Component {
 		return (
 			<Container>
 			<StatusBar backgroundColor="#0e38a3" hidden={false} barstyle="light-content"/>
-				<Content style={{backgroundColor: '#fff'}}>
+				<Content style={{backgroundColor: '#fff', paddingTop: 60}}>
 					<HeadIcon/>
 					<Form>
 						<Item stackedLabel>
@@ -88,39 +88,35 @@ class Login extends Component {
 		}
 	}
 
-	// async handleLogin(){
-	// 	await this.props.dispatch(login({
-	// 		email : this.state.emailInput,
-	// 		password : this.state.passwordInput
-	// 	}));
-	// 	const loginInfo = this.props.auth.data
-	// 	if(loginInfo.token){
+	async handleLogin(){
+		await this.props.dispatch(login({
+			email : this.state.emailInput,
+			password : this.state.passwordInput
+		}));
+		const loginInfo = this.props.auth.data
+		if(loginInfo.token){
 
-	// 		const user = loginInfo.user
-	// 		try{
-	// 		await AsyncStorage.setItem('token', String(loginInfo.token))
-	// 		await AsyncStorage.setItem('userId', String(user.id))
-	// 		await AsyncStorage.setItem('userFirstName', user.first_name)
-	// 		await AsyncStorage.setItem('userLastName', String(user.last_lame))
-	// 		await AsyncStorage.setItem('userAvatar', String(user.image_url))
-	// 		await AsyncStorage.setItem('userEmail', String(user.email))
-	// 		await AsyncStorage.setItem('refToken', String(loginInfo.refToken))
+			const user = loginInfo.user
+			try{
+			await AsyncStorage.setItem('token', String(loginInfo.token))
+			await AsyncStorage.setItem('userId', String(user.id))
+			await AsyncStorage.setItem('userName', user.name)
+			await AsyncStorage.setItem('userEmail', String(user.email))
+			await AsyncStorage.setItem('refToken', String(loginInfo.refToken))
 
-	// 		await this.props.dispatch(getNotes(loginInfo.token, user.id))
+			this.props.navigation.navigate('contents')
+			}catch(e){
+				console.warn(e);
+			}
 
-	// 		this.props.navigation.navigate('contents')
-	// 		}catch(e){
-	// 			console.warn(e);
-	// 		}
-
-	// 	}
-	// 	else if(loginInfo.message){
-	// 		Alert.alert("Ups", loginInfo.message)
-	// 	}
-	// 	else{
-	// 		Alert.alert("Error", "An error occurred, please try again later.")
-	// 	}
-	// }
+		}
+		else if(loginInfo.message){
+			Alert.alert("Ups", loginInfo.message)
+		}
+		else{
+			Alert.alert("Error", "An error occurred, please try again later.")
+		}
+	}
 }
 const mapStateToProps = (state) => {
 	return {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Platform, StyleSheet, FlatList, Image, TouchableWithoutFeedback, Dimensions, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { ScrollView, Platform, StyleSheet, FlatList, Image, TouchableWithoutFeedback, Dimensions, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, Left, Body, Right, Card,View, CardItem, Text, Fab, Icon, Badge, Header,Button, Title, Item, Input, List, ListItem, Thumbnail } from 'native-base';
 
@@ -54,6 +54,7 @@ class Home extends Component{
     }
 
     render() {
+        const user = this.props.auth.data
     	return (
             <Container>
                 <StatusBar backgroundColor='#fff' barStyle="default" animated={true}/>
@@ -67,7 +68,7 @@ class Home extends Component{
                 </Header>
                 
                 <Content style={{backgroundColor: '#f9f9f9'}}>
-                    <View style={{flexDirection: 'column', paddingTop: 15, height: 150, backgroundColor: '#fff'}}>
+                    <View style={{flexDirection: 'column', paddingTop: 18, height: 150, backgroundColor: '#fff'}}>
                         <Image source={require('../assets/img/headbg.png')} style={{width: '100%', height: '120%', position: 'absolute'}}/>
 
                         <View style={{ backgroundColor: 'transparent',  flexDirection: 'row', paddingLeft: 40, paddingVertical: 15, paddingBottom: 10}}>
@@ -75,7 +76,7 @@ class Home extends Component{
                                 <Image source={require('../assets/img/user.png')} style={{width: 60, height: 60, borderRadius: 100, borderWidth: 2, borderColor: '#fff'}}/>
                             </View>
                             <View style={{paddingLeft: 20, paddingBottom: 10}}>
-                                <Text style={{color: '#fff', fontSize: 28, fontWeight:'100'}}>Hi, Name</Text>
+                                <Text style={{color: '#fff', fontSize: 28, fontWeight:'100'}}>Hi, {user.name}</Text>
                                 <Text style={{color: '#fff', fontSize: 20, paddingTop: 5}}>{this.state.date}</Text>
                                 <Text style={{color: '#fff', fontSize: 12, paddingTop: 25}}>2 Teachers  |  3 Students  |  2 Courses</Text>
                             </View>
@@ -83,7 +84,7 @@ class Home extends Component{
                     </View>
 
                     <View style={{marginVertical: 20}}>
-                    	<TouchableWithoutFeedback>
+                    	<TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('teacher')}>
                     	<View style={styles.gridContainer}>
                     		<Icon name="account" type="MaterialCommunityIcons" style={{color: '#555', fontSize: 35}}/>
 							<View style={{paddingHorizontal: 20}}>
@@ -93,7 +94,7 @@ class Home extends Component{
 						</View>
 						</TouchableWithoutFeedback>
 
-                    	<TouchableWithoutFeedback>
+                    	<TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('student')}>
                     	<View style={styles.gridContainer}>
                     		<Icon name="account-group" type="MaterialCommunityIcons" style={{color: '#555', fontSize: 35}}/>
 							<View style={{paddingHorizontal: 20}}>
@@ -103,7 +104,7 @@ class Home extends Component{
 						</View>
 						</TouchableWithoutFeedback>
 
-                    	<TouchableWithoutFeedback>
+                    	<TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('courses')}>
 						<View style={styles.gridContainer}>
                     		<Icon name="teach" type="MaterialCommunityIcons" style={{color: '#555', fontSize: 35}}/>
 							<View style={{paddingHorizontal: 20}}>
@@ -133,7 +134,7 @@ const mapStateToProps = (state) => {
         auth: state.auth
     }
 }
-export default connect()(Home)
+export default connect(mapStateToProps)(Home)
 
 const styles = StyleSheet.create({
 	gridContainer : {

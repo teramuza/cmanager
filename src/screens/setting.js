@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
-import { ScrollView, Platform, StyleSheet, FlatList, Image, TouchableWithoutFeedback, Dimensions, StatusBar, AsyncStorage, Alert } from 'react-native';
+import { ScrollView, Platform, StyleSheet, FlatList, Image, TouchableWithoutFeedback, Dimensions, StatusBar, Alert } from 'react-native';
 import { Container, Content, Left, Body, Right, Card,View, CardItem, Text, Fab, Icon, Badge, Header,Button, Title, Item, Input, List, ListItem, Thumbnail } from 'native-base';
 
-// import { logout } from '../../redux/actions/auth'
+import { logout } from '../actions/auth'
 
 
 class Setting extends Component {
@@ -13,7 +14,7 @@ class Setting extends Component {
 	})
 
 	render(){
-		// const user = this.props.auth.data
+		const user = this.props.auth.data
 		return(
 			<Container>
 				<StatusBar hidden={false} translucent={false} barStyle="default" />
@@ -29,19 +30,13 @@ class Setting extends Component {
 		              <ListItem noBorder style={{paddingVertical: 5}}>
 		                  <View style={{}}>
 		                    <Text style={{fontSize: 14, color: '#303030'}}>Email</Text>
-		                    <Text style={{fontSize: 13, color: '#969696'}}>dump@mail.com</Text>
-		                  </View>
-		              </ListItem>
-		              <ListItem noBorder style={{paddingVertical: 5}}>
-		                  <View style={{}}>
-		                    <Text style={{fontSize: 14, color: '#303030'}}>Account Type</Text>
-		                    <Text style={{fontSize: 13, color: '#969696'}}>Free Account</Text>
+		                    <Text style={{fontSize: 13, color: '#969696'}}>{user.email}</Text>
 		                  </View>
 		              </ListItem>
 		              <ListItem noBorder style={{paddingVertical: 5}}>
 		                  <View>
 		                      <Text style={{fontSize: 14, color: '#303030'}}>About</Text>
-		                      <Text style={{fontSize: 13, color: '#969696'}}>Versi teranotes 1.0-12_rc</Text>
+		                      <Text style={{fontSize: 13, color: '#969696'}}>Versi CManager 0.1.0-12_bc</Text>
 		                  </View>
 		                  
 		              </ListItem>
@@ -67,7 +62,7 @@ class Setting extends Component {
 		              <ListItem noBorder style={{paddingVertical: 10}}>
 		                    <View style={{flexDirection: 'row'}} >
 		                      <Icon name="globe" style={{color: '#303030'}}/>
-		                      <Text style={{fontSize: 14, color: '#303030', paddingTop: 7, paddingLeft: 12}}>Visit teranotes.teramuza.xyz</Text>
+		                      <Text style={{fontSize: 14, color: '#303030', paddingTop: 7, paddingLeft: 12}}>Visit cmanager.teramuza.xyz</Text>
 		                    </View>
 		              </ListItem>
 		              <ListItem noBorder style={{paddingVertical: 10}} onPress={()=> this.confirmLogout()}>
@@ -82,30 +77,30 @@ class Setting extends Component {
 		)
 	}
 
-	// confirmLogout(){
- //    	Alert.alert(
- //            'Logout',
- //            'Are you sure you want to log out?',
- //            [
- //                {text: 'No'},
- //                {text: 'Yes', onPress: async () => {
- //                    const token = await AsyncStorage.getItem('token')
- //                    const refreshToken = await AsyncStorage.getItem('refToken')
+	confirmLogout(){
+    	Alert.alert(
+            'Logout',
+            'Are you sure you want to log out?',
+            [
+                {text: 'No'},
+                {text: 'Yes', onPress: async () => {
+                    const token = this.props.auth.data.token
+                    const refreshToken = this.props.auth.data.refToken
                     
- //                    await this.props.dispatch(logout(token, refreshToken))
- //                    await AsyncStorage.clear()
- //                    this.props.navigation.navigate('splash')
- //                }
- //                },
- //            ]
- //        )
-	// }
+                    await this.props.dispatch(logout(token, refreshToken))
+                    await AsyncStorage.clear()
+                    this.props.navigation.navigate('splash')
+                }
+                },
+            ]
+        )
+	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-        // auth: state.auth
+        auth: state.auth
 	}
 }
 
-export default connect()(Setting)
+export default connect(mapStateToProps)(Setting)
